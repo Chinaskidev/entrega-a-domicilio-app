@@ -1,38 +1,39 @@
-import fs from 'fs';
-import path from 'path';
-import { NextRequest, NextResponse } from 'next/server';
+import { google } from 'googleapis';
 
-export async function POST(req: NextRequest) {
-  if (req.method === 'POST') {
-    try {
-      // Leer los datos enviados desde el formulario
-      const { packageType, pickupLocation, deliveryLocation, deliveryDate, deliveryTime, additionalDetails } = await req.json();
+export async function POST(req: Request) {
+  try {
+    console.log(process.env.GOOGLE_SERVICE_ACCOUNT_JSON); // Verifica el contenido de la variable
+    const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON || '');
 
-      // Crear la nueva fila para el CSV
-      const newRow = `${packageType},${pickupLocation},${deliveryLocation},${deliveryDate},${deliveryTime},${additionalDetails}\n`;
+    const auth = new google.auth.GoogleAuth({
+      credentials,
+      scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+    });
 
-      // Ruta para el archivo CSV
-      const filePath = path.join(process.cwd(), 'public', 'downloads', 'delivery_requests.csv');
+    const sheets = google.sheets({ version: 'v4', auth });
 
-      // Verificar si el archivo CSV ya existe
-      const fileExists = fs.existsSync(filePath);
+    // Obtener datos del formulario enviado
+    const { packageType, pickupLocation, deliveryLocation, deliveryDate, deliveryTime, additionalDetails } = await req.json();
 
-      // Si el archivo no existe, agregar encabezados y la nueva fila
-      if (!fileExists) {
-        const header = 'Package Type,Pickup Location,Delivery Location,Delivery Date,Delivery Time,Additional Details\n';
-        fs.writeFileSync(filePath, header + newRow, { flag: 'w' });
-      } else {
-        // Si el archivo existe, agregar solo la nueva fila
-        fs.appendFileSync(filePath, newRow);
-      }
+    // ID de la hoja y rango
+    const spreadsheetId = process.env.SPREADSHEET_ID; // Obtenemos el ID de la hoja desde el entorno
+    const range = 'Hoja1!A1:F1'; // Asegúrate de que "Hoja1" es el nombre correcto de tu hoja de cálculo
 
-      // Retornar respuesta de éxito
-      return NextResponse.json({ message: 'Form submitted successfully, data saved to CSV' });
-    } catch (error) {
-      console.error(error);
-      return NextResponse.json({ error: 'Error saving data to CSV' }, { status: 500 });
-    }
-  } else {
-    return NextResponse.json({ error: 'Method Not Allowed' }, { status: 405 });
+    // Insertar los datos en Google Sheets
+    await sheets.spreadsheets.values.append({
+      spreadsheetId,
+      range,
+      valueInputOption: 'RAW',
+      requestBody: {
+        values: [
+          [packageType, pickupLocation, deliveryLocation, deliveryDate, deliveryTime, additionalDetails],
+        ],
+      },
+    });
+
+    return new Response(JSON.stringify({ message: 'Datos guardados en Google Sheets exitosamente' }), { status: 200 });
+  } catch (error) {
+    console.error('Error saving data to Google Sheets:', error);
+    return new Response(JSON.stringify({ error: 'Error saving data to Google Sheets' }), { status: 500 });
   }
 }
