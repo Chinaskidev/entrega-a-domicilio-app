@@ -1,9 +1,14 @@
 import { google } from 'googleapis';
+import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
   try {
-    console.log(process.env.GOOGLE_SERVICE_ACCOUNT_JSON); // Verifica el contenido de la variable
     const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON || '');
+
+    if (!credentials) {
+      console.error('Google Service Account credentials are missing');
+      return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
+    }
 
     const auth = new google.auth.GoogleAuth({
       credentials,
@@ -12,18 +17,21 @@ export async function POST(req: Request) {
 
     const sheets = google.sheets({ version: 'v4', auth });
 
-    // Obtener datos del formulario enviado
     const { packageType, pickupLocation, deliveryLocation, deliveryDate, deliveryTime, additionalDetails } = await req.json();
 
-    // ID de la hoja y rango
-    const spreadsheetId = process.env.SPREADSHEET_ID; // Obtenemos el ID de la hoja desde el entorno
-    const range = 'Hoja1!A1:F1'; // Asegúrate de que "Hoja1" es el nombre correcto de tu hoja de cálculo
+    const spreadsheetId = process.env.SPREADSHEET_ID;
+    
+    if (!spreadsheetId) {
+      console.error('Spreadsheet ID is missing');
+      return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
+    }
 
-    // Insertar los datos en Google Sheets
+    const range = 'Hoja1!A:F'; // This will append to the next available row
+
     await sheets.spreadsheets.values.append({
       spreadsheetId,
       range,
-      valueInputOption: 'RAW',
+      valueInputOption: 'USER_ENTERED',
       requestBody: {
         values: [
           [packageType, pickupLocation, deliveryLocation, deliveryDate, deliveryTime, additionalDetails],
@@ -31,9 +39,10 @@ export async function POST(req: Request) {
       },
     });
 
-    return new Response(JSON.stringify({ message: 'Datos guardados en Google Sheets exitosamente' }), { status: 200 });
+    return NextResponse.json({ message: 'Data saved to Google Sheets successfully' }, { status: 200 });
   } catch (error) {
     console.error('Error saving data to Google Sheets:', error);
-    return new Response(JSON.stringify({ error: 'Error saving data to Google Sheets' }), { status: 500 });
+    return NextResponse.json({ error: 'Error saving data to Google Sheets' }, { status: 500 });
   }
 }
+
