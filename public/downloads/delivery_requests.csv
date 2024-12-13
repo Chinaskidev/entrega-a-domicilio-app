@@ -1,0 +1,9 @@
+Package Type,Pickup Location,Delivery Location
+medium,merliot ,el escalon
+document,escalon,santa tecla
+medium,Plaza merliot,Parque San Martin
+medium,san salvador,santa tecla
+medium,san salvador,la libertad
+small,san salvador,la libertad
+medium,merliot,escalon,2024-12-15,13:07,llevar una bolsa de chocolate 
+medium,santa tecla,plaza la joya,2024-12-16,15:28,es una caja con vidrio
