@@ -42,3 +42,5 @@ next-env.d.ts
 
 # archivos JSON
 *.json
+
+.env.local

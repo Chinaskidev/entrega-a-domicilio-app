@@ -54,13 +54,13 @@ export default function DeliveryForm() {
       <main className="flex-grow container mx-auto py-10 px-4 flex items-center justify-center">
         <Card className="w-full max-w-md bg-red-100 shadow-xl">
           <CardHeader>
-            <CardTitle className="text-3xl font-bold text-center">Request a Delivery</CardTitle>
+            <CardTitle className="text-3xl font-bold text-center">Solicitar un envío</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label htmlFor="packageType" className="block text-gray-700 font-bold mb-2">
-                  Package Type
+                Tipo de paquete
                 </label>
                 <select
                   id="packageType"
@@ -70,16 +70,16 @@ export default function DeliveryForm() {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 >
-                  <option value="">Select a package type</option>
-                  <option value="small">Small Package</option>
-                  <option value="medium">Medium Package</option>
-                  <option value="large">Large Package</option>
-                  <option value="document">Document</option>
+                  <option value="">Selecciona el tipo de paquete</option>
+                  <option value="small">Pequeño</option>
+                  <option value="medium">Mediano</option>
+                  <option value="large">Grande</option>
+                  <option value="document">Documentos</option>
                 </select>
               </div>
               <div>
                 <label htmlFor="pickupLocation" className="block text-gray-700 font-bold mb-2">
-                  Pickup Location
+                  Lugar de recogida
                 </label>
                 <input
                   type="text"
@@ -93,7 +93,7 @@ export default function DeliveryForm() {
               </div>
               <div>
                 <label htmlFor="deliveryLocation" className="block text-gray-700 font-bold mb-2">
-                  Delivery Location
+                  Lugar de entrega
                 </label>
                 <input
                   type="text"
@@ -107,7 +107,7 @@ export default function DeliveryForm() {
               </div>
               <div>
                 <label htmlFor="deliveryDate" className="block text-gray-700 font-bold mb-2">
-                  Delivery Date
+                  Fecha de entrega
                 </label>
                 <input
                   type="date"
@@ -121,7 +121,7 @@ export default function DeliveryForm() {
               </div>
               <div>
                 <label htmlFor="deliveryTime" className="block text-gray-700 font-bold mb-2">
-                  Delivery Time
+                  Tiempo de entrega
                 </label>
                 <input
                   type="time"
@@ -135,7 +135,7 @@ export default function DeliveryForm() {
               </div>
               <div>
                 <label htmlFor="additionalDetails" className="block text-gray-700 font-bold mb-2">
-                  Additional Details
+                  Informacion adicional
                 </label>
                 <textarea
                   id="additionalDetails"
@@ -151,7 +151,7 @@ export default function DeliveryForm() {
                 disabled={isSubmitting}
                 className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 disabled:opacity-50"
               >
-                {isSubmitting ? 'Submitting...' : 'Submit Request'}
+                {isSubmitting ? 'Enviando...' : 'Enviar solicitud'}
               </button>
             </form>
           </CardContent>
