@@ -11,7 +11,7 @@ export default function Home() {
         <section
           className="relative text-white py-20"
           style={{
-            backgroundImage: "url('/scooter.jpg')", // Reemplaza con la ruta de tu imagen
+            backgroundImage: "url('/scooter.jpg')",
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
@@ -20,11 +20,14 @@ export default function Home() {
             <h1 className="text-4xl font-bold mb-4">Entregas rápidas y ecológicas</h1>
             <p className="text-xl mb-8">Utilizamos scooters eléctricos para realizar entregas rápidas y respetuosas con el medio ambiente.</p>
             <Link
-              href="/form"
+              href="https://airtable.com/app0EEVOp8n0mADSR/pagnpcxx3eRvAbum9/form" // Reemplaza con el enlace correcto de tu formulario
+              target="_blank" // Abre el formulario en una nueva pestaña
+              rel="noopener noreferrer" // Mejora seguridad al abrir enlaces externos
               className="inline-block bg-white text-blue-600 py-2 px-6 rounded-full text-lg font-semibold hover:bg-blue-100 transition duration-300"
             >
               Solicita una Entrega
             </Link>
+
           </div>
         </section>
 

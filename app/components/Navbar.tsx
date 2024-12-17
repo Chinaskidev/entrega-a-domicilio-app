@@ -25,7 +25,9 @@ export default function Navbar() {
               Home
             </Link>
             <Link
-              href="/form"
+              href="https://airtable.com/app0EEVOp8n0mADSR/pagnpcxx3eRvAbum9/form" // Reemplaza con el enlace correcto de tu formulario
+              target="_blank" // Abre el formulario en una nueva pestaña
+              rel="noopener noreferrer" // Mejora seguridad al abrir enlaces externos
               className="text-red-700 hover:text-red-900 px-3 py-2 rounded-md text-lg font-medium transition-colors duration-300 hover:bg-red-100"
             >
               Solicita una Entrega
